@@ -137,35 +137,137 @@ sequenceDiagram
 | لایه | تکنولوژی‌های به‌کار رفته | وظیفه اصلی |
 | :--- | :--- | :--- |
 | **Backend** | Python 3.12, Django 5.x, Django REST Framework | هسته مرکزی سامانه، منطق RAG و API |
-| **Database & Vector** | PostgreSQL 16+, pgvector extension | پایگاه داده رابطه‌ای و ذخیره‌سازی بردارهای ۱۰۲۴ بعدی |
+| **Database & Vector** | PostgreSQL 16+ / SQLite, pgvector extension | پایگاه داده و ذخیره‌سازی بردارهای ۱۰۲۴ بعدی |
 | **Embeddings** | BAAI/bge-m3 (Dense 1024-dim) | تعبیه‌سازی معنایی متن کتب درسی و پرسش‌ها |
 | **Retrieval** | BM25-IDF + Dense Vector Search + RRF | بازیابی ترکیبی کلمات کلیدی و مفاهیم معنایی |
 | **LLM Inference** | DeepSeek-V4-Flash / Gemma-4-31B-IT (ArvanCloud Gateway) | استنتاج زنده، تولید محتوای آموزشی و استریم |
-| **Frontend** | Next.js / Modern RTL Persian Interface | رابط کاربری چت، بازرس منبع و انتخاب دروس |
+| **Frontend** | Next.js 14+, Tailwind CSS, assistant-ui, RTL Support | رابط کاربری چت، بازرس منبع و تعامل دروس |
 
 ---
 
-## 🚀 راهنمای سریع راه‌اندازی و اجرا
+## 🚀 راهنمای گام‌به‌گام راه‌اندازی و اجرای مجدد پروژه (Step-by-Step Setup Guide)
 
-### ۱. راه‌اندازی محیط و اجرای بک‌اند جنگو:
-```powershell
-.\venv\Scripts\python.exe backend/manage.py migrate
-.\venv\Scripts\python.exe backend/manage.py runserver 127.0.0.1:8000
-```
+اگر قصد دارید این پروژه را از ابتدا بر روی یک سیستم جدید راه‌اندازی کنید، مراحل زیر را به ترتیب انجام دهید:
 
-### ۲. راه‌اندازی فرانت‌اند Next.js:
+### 📋 پیش‌نیازها (Prerequisites)
+1. **Python 3.10+** (پیشنهادی: پایتون ۳.۱۲)
+2. **Node.js 18+** و **npm** (برای فرانت‌اند Next.js)
+3. **Git**
+4. **Docker & Docker Compose** *(اختیاری - برای اجرای PostgreSQL مجهز به pgvector)*
+
+---
+
+### گام ۱: دریافت سورس پروژه (Clone Repository)
+ابتدا مخزن را از گیت‌هاب کلون کرده و وارد پوشه پروژه شوید:
 ```bash
-cd frontend-next
-npm run dev
+git clone https://github.com/Abulfadl-Ahmadi/ai-rag-high-school.git
+cd ai-rag-high-school
 ```
-سپس مرورگر را در آدرس `http://localhost:3000` باز کنید.
 
-### ۳. اجرای ارزیابی بنچ‌مارک (Evaluation):
-```powershell
-.\venv\Scripts\python.exe backend/manage.py run_evaluation
+---
+
+### گام ۲: راه‌اندازی پایگاه داده (Database Setup)
+
+#### روش اول: اجرای خودکار با داکر (پیشنهادی برای pgvector)
+دستور زیر کانتینر پایگاه داده PostgreSQL مجهز به اکستنشن `pgvector` را بالا می‌آورد:
+```bash
+docker-compose up -d
 ```
-(دقت ارزیابی بنچ‌مارک: **Recall@5 = 96.0%** و **MRR = 0.72**)
+
+#### روش دوم: اجرای لوکال با SQLite (بدون نیاز به داکر)
+سامانه به‌صورت خودکار در حالت پیش‌فرض برای توسعه محلی سبک از SQLite3 با پشتیبانی از جستجوی متنی و برداری استفاده می‌کند و بدون هیچ پیش‌نیاز دیتابیسی اجرا خواهد شد.
+
+---
+
+### گام ۳: راه‌اندازی محیط و بک‌اند جنگو (Backend Setup)
+
+1. **ساخت و فعال‌سازی محیط مجازی پایتون:**
+   * **ویندوز (PowerShell):**
+     ```powershell
+     python -m venv venv
+     .\venv\Scripts\Activate.ps1
+     ```
+   * **لینوکس / مک (Bash):**
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+
+2. **نصب وابستگی‌های پایتون:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **اعمال ساختار پایگاه داده (Migrations):**
+   ```bash
+   python backend/manage.py migrate
+   ```
+
+4. **تزریق و اینجِست داده‌های کتاب درسی و سوالات امتحان نهایی:**
+   ```bash
+   python backend/manage.py ingest_curriculum
+   ```
+   *(این دستور متن کامل دروس کتاب دین و زندگی ۳، آیات، واژگان و سوالات امتحانی را با بردارهای معنایی در دیتابیس بارگذاری می‌کند).*
+
+5. **اجرای سرور بک‌اند جنگو:**
+   ```bash
+   python backend/manage.py runserver 127.0.0.1:8000
+   ```
+   اکنون API بک‌اند در آدرس `http://127.0.0.1:8000/` آماده دریافت درخواست‌ها است.
+
+---
+
+### گام ۴: راه‌اندازی فرانت‌اند Next.js (Frontend Setup)
+
+در یک پنجره ترمینال جدید وارد پوشه فرانت‌اند شوید:
+
+1. **ورود به پوشه فرانت‌اند:**
+   ```bash
+   cd frontend-next
+   ```
+
+2. **نصب پکیج‌های جاوااسکریپت:**
+   ```bash
+   npm install
+   ```
+
+3. **اجرای سرور توسعه فرانت‌اند:**
+   ```bash
+   npm run dev
+   ```
+
+4. **مشاهده در مرورگر:**
+   آدرس زیر را در مرورگر خود باز کنید:
+   👉 **`http://localhost:3000`**
+
+---
+
+### گام ۵: اجرای ارزیابی کیفی و تست‌های خودکار (Evaluation & Testing)
+
+* **اجرای ارزیابی ۵۰ سوال استاندارد امتحانات نهایی (Benchmark Evaluation):**
+  ```bash
+  python backend/manage.py run_evaluation
+  ```
+  *(خروجی معیارهای Recall@5, MRR و دقت استناد آموزشی را اعتبارسنجی می‌کند).*
+
+* **اجرای تست‌های واحد بک‌اند (Unit Tests):**
+  ```bash
+  python backend/manage.py test knowledge
+  ```
+
+---
+
+## ⚙️ متغیرهای محیطی اختیاری (Environment Variables)
+
+در صورت تمایل به تغییر کلیدها یا گیت‌وی مدل‌های هوش مصنوعی می‌توانید فایل `.env` را در ریشه بک‌اند تنظیم کنید:
+
+| نام متغیر | مقدار پیش‌فرض | توضیحات |
+| :--- | :--- | :--- |
+| `ARVAN_API_KEY` | کلید پیش‌فرض سامانه | توکن دسترسی به گیت‌وی ابری آروان |
+| `DEEPSEEK_GATEWAY_URL` | گیت‌وی اختصاصی DeepSeek | آدرس Endpoint مدل DeepSeek-V4-Flash |
+| `GEMMA_GATEWAY_URL` | گیت‌وی اختصاصی Gemma | آدرس Endpoint مدل Gemma-4-31B-IT |
 
 ---
 ⭐ **توسعه‌یافته به صورت کاملاً فارسی، استاندارد و هماهنگ با اهداف برنامه درسی ملی ایران.**
+
 
