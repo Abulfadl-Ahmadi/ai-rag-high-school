@@ -1,11 +1,62 @@
+# ===================================
+# Python & Django
+# ===================================
 venv/
+env/
+ENV/
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.db.sqlite3
-db.sqlite3
+*.py[cod]
+*$py.class
 *.sqlite3
+db.sqlite3
+*.log
 .env
 *.env
+
+# ===================================
+# Node.js & Next.js
+# ===================================
+node_modules/
+*/node_modules/
+.next/
+*/.next/
+out/
+*/out/
+build/
+dist/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===================================
+# Dataset Media Rules (Exclude PDFs & Images)
+# ===================================
+dataset/**/*.pdf
+dataset/**/*.png
+dataset/**/*.jpg
+dataset/**/*.jpeg
+dataset/**/*.webp
+dataset/**/*.gif
+dataset/**/*.svg
+dataset/**/images/
+dataset/**/dini-12_images/
+dataset/textbooks/dini-12.pdf
+dataset/textbooks/dini-12_images/
+
+# ===================================
+# IDE & System Files
+# ===================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===================================
+# Agent / Scratch / External Tools
+# ===================================
 .agents/
+.gemini/
+Antigravity-RTL/
+test_err.py
+

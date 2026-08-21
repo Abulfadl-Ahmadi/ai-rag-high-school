@@ -27,8 +27,8 @@ def ingest_document(file_path: str):
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(parsed_data, f, ensure_ascii=False, indent=2)
 
-        print(f"✓ PDF parsed successfully")
-        print(f"✓ Raw JSON saved to {output_path}")
+        print(f"Success: PDF parsed successfully")
+        print(f"Success: Raw JSON saved to {output_path}")
 
         # The next steps (cleaner, classifier, structure_detector) will be built 
         # after we inspect the raw Docling JSON.
@@ -39,5 +39,5 @@ def ingest_document(file_path: str):
         doc_record.processing_status = 'FAILED'
         doc_record.error_message = str(e)
         doc_record.save()
-        print(f"❌ Ingestion failed: {str(e)}")
+        print(f"Error: Ingestion failed: {str(e)}")
         raise

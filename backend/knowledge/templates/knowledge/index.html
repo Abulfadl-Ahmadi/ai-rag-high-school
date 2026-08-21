@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معلم هوشمند دبیرستان | دین و زندگی ۳ (پایه دوازدهم)</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="brand-section">
+            <div class="logo-badge">🎓</div>
+            <div class="brand-title">
+                <h1>دبیرستان هوشمند | سامانه RAG آموزشی</h1>
+                <p>مبتنی بر کتب درسی رسمی و امتحانات نهایی ۱۴۰۴-۱۴۰۵</p>
+            </div>
+        </div>
+        <div class="header-controls">
+            <label for="lessonSelect" style="font-size:13px; font-weight:700; color:var(--text-muted);">فیلتر سرفصل:</label>
+            <select id="lessonSelect" class="lesson-selector">
+                <option value="">همه درس‌ها (کل کتاب)</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="app-container">
+        
+        <!-- Left / Chat Pane -->
+        <section class="chat-pane">
+            <div class="chat-history" id="chatHistory">
+                <!-- Welcome Message -->
+                <div class="message-bubble assistant">
+                    <div class="avatar bot-avatar">🎓</div>
+                    <div class="bubble-content">
+                        سلام دانش‌آموز عزیز! من <strong>معلم هوشمند دین و زندگی ۳ (پایه دوازدهم)</strong> هستم.<br/>
+                        پاسخ‌های من <strong>کاملاً مستند به متن کتاب درسی، پیام آیات و کلید تصحیح امتحانات نهایی</strong> است. هر سوالی درباره مفاهیم، آیات یا سوالات امتحانی داری بپرس!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Chips -->
+            <div class="quick-chips">
+                <button class="chip-btn" data-prompt="سنت ابتلا چیست و چه اهدافی دارد؟">⚡ سنت ابتلا و آزمایش</button>
+                <button class="chip-btn" data-prompt="توبه نصوح چیست و در کدام درس آمده است؟">📖 توبه نصوح (درس ۷)</button>
+                <button class="chip-btn" data-prompt="مراتب توحید (توحید در خالقیت و ربوبیت) را توضیح بده">🎯 مراتب توحید</button>
+                <button class="chip-btn" data-prompt="آیه «يَا أَيُّهَا النَّاسُ أَنْتُمُ الْفُقَرَاءُ إِلَى اللَّهِ» به کدام مفهوم اشاره دارد؟">📜 پیام آیه ۱۵ سوره فاطر</button>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" class="chat-input" placeholder="سوال خود را درباره مفاهیم درس یا امتحانات نهایی بپرسید..." autofocus />
+                <button id="sendBtn" class="send-btn">
+                    <span>ارسال</span>
+                    <span>➤</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Right / Sidebar Pane -->
+        <aside class="sidebar-pane">
+            
+            <!-- Source Inspector -->
+            <div class="info-card">
+                <div class="card-title">
+                    <span>📖</span>
+                    <span>منبع استخراجی از کتاب درسی</span>
+                </div>
+                <h4 id="sourceTitle" style="font-size:13px; color:var(--primary-dark); margin-bottom:8px;">هنوز سوالی پرسیده نشده است</h4>
+                <div class="source-preview" id="sourceContent">
+                    هنگامی که سوالی بپرسید، پاراگراف دقیق و صفحه کتاب درسی در این بخش برای اعتبارسنجی نمایش داده می‌شود.
+                </div>
+            </div>
+
+            <!-- Exam Intelligence Card -->
+            <div class="info-card">
+                <div class="card-title">
+                    <span>🎯</span>
+                    <span>هوش امتحانی و بارم‌بندی نهایی</span>
+                </div>
+                <div id="examIntelContent">
+                    <p style="font-size:13px; color:var(--text-muted);">اطلاعات مربوط به تکرار در امتحانات نهایی سال‌های قبل و بارم‌بندی سوالات در اینجا نمایش داده می‌شود.</p>
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

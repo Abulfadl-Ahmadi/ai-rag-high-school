@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:15
+    image: pgvector/pgvector:pg15
+    container_name: high_school_pgvector
     environment:
       POSTGRES_DB: knowledge_db
       POSTGRES_USER: myuser
@@ -10,7 +11,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pgvector_data:/var/lib/postgresql/data
+    restart: always
 
 volumes:
-  postgres_data:
+  pgvector_data:
